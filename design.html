@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Design Gallery</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdf6f0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: white;
+      color: rgb(31, 26, 26);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .back-btn { 
+      margin: 15px 25px;
+      padding: 10px 20px; 
+      background-color: #fdf6f0; 
+      color: #b76e79;
+      border: 2px solid #b76e79;
+      border-radius: 30px; 
+      cursor: pointer; 
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      background-color: #b76e79;
+      color: white;
+    }
+    .gallery-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .design-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .design-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    .design-image-container {
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f8f9fa;
+    }
+    .design-image {
+      max-width: 100%;
+      max-height: 400px;
+      width: auto;
+      height: auto;
+      display: block;
+    }
+    .design-details {
+      padding: 20px;
+      flex-grow: 1;
+    }
+    .design-title {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #b07cc2;
+      font-weight: 600;
+    }
+    .customer-name {
+      font-weight: normal;
+      color: #6c757d;
+      font-size: 0.9em;
+    }
+    .design-description {
+      margin: 0 0 15px;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.5;
+    }
+    .design-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #777;
+    }
+    .empty-gallery {
+      text-align: center;
+      grid-column: 1 / -1;
+      padding: 50px;
+      color: #b76e79;
+      font-size: 18px;
+    }
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .status-pending {
+      background-color: #FFF3CD;
+      color: #856404;
+    }
+    .status-approved {
+      background-color: #D4EDDA;
+      color: #155724;
+    }
+    .status-rejected {
+      background-color: #F8D7DA;
+      color: #721C24;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='index.php'">Back to Home</button>
+  <header>
+    <h1>Custom Design Gallery</h1>
+    <p>Browse all custom design requests</p>
+  </header>
+
+  <div class="gallery-container" id="galleryContainer">
+    <!-- Design cards will be dynamically inserted here -->
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const galleryContainer = document.getElementById('galleryContainer');
+      let designs = JSON.parse(localStorage.getItem('customDesigns')) || [];
+      
+      // Display empty message if no designs
+      if (designs.length === 0) {
+        galleryContainer.innerHTML = `
+          <div class="empty-gallery">
+            <p>No custom designs submitted yet</p>
+            <p>Submit your first custom design request to see it here!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Display all designs in reverse chronological order (newest first)
+      designs.reverse().forEach(design => {
+        const designCard = document.createElement('div');
+        designCard.className = 'design-card';
+        
+        // Format the date
+        const submissionDate = new Date(design.timestamp);
+        const formattedDate = submissionDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        // Determine status badge
+        let statusBadge = '';
+        if (design.status) {
+          statusBadge = `<span class="status-badge status-${design.status.toLowerCase()}">${design.status}</span>`;
+        } else {
+          statusBadge = '<span class="status-badge status-pending">Pending</span>';
+        }
+        
+        designCard.innerHTML = `
+          <div class="design-image-container">
+            <img src="${design.image}" alt="Custom Design" class="design-image">
+          </div>
+          <div class="design-details">
+            <h3 class="design-title">Custom Design <span class="customer-name">by ${design.name}</span></h3>
+            <p class="design-description">${design.description}</p>
+            <div class="design-meta">
+              <span>Submitted: ${formattedDate}</span>
+              ${statusBadge}
+            </div>
+          </div>
+        `;
+        galleryContainer.appendChild(designCard);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Explore Sarees</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fdf6f0;
+    }
+
+    header {
+      background-color: #b76e79;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .saree-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .saree-card {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .saree-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .saree-card img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .saree-card button {
+      width: 100%;
+      padding: 15px;
+      background-color: #220208;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      color:  #b76e79;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .saree-card button:hover {
+      background-color: #c4d4e5;
+    }
+    .back-btn { 
+         margin-top: 1px;
+         padding: 10px 20px; 
+         background-color: #fdf6f0; 
+         color:#b76e79;
+         border: none;
+         border-radius: 5px; 
+         cursor: pointer; 
+         font-size: 16px;
+        }
+  </style>
+</head>
+<body>
+    <button class="back-btn" onclick="window.location.href='index.php'">Back to Home</button>
+  <header>
+    <h1>Explore Saree Types</h1>
+    <p>Select your style from our curated saree collections</p>
+  </header>
+  <section class="saree-grid">
+    <div class="saree-card">
+      <img src="Images\img1.jpg" alt="Banarasi Saree">
+      <button class="btn-small" onclick="window.location.href='banaras.html'">Banarasi Saree</button>
+    </div>
+    <div class="saree-card">
+      <img src="Images\img2.jpg" alt="Cotton Saree">
+      <button class="btn-small" onclick="window.location.href='cotton.html'">Cotton Saree</button>
+    </div>
+
+    <div class="saree-card">
+      <img src="Images\img5.jpg" alt="Silk Saree">
+      <button class="btn-small" onclick="window.location.href='silk.html'">Silk Saree</button>
+    </div>
+
+    <div class="saree-card">
+      <img src="Images\img3.jpg" alt="Bridal Saree">
+      <button class="btn-small" onclick="window.location.href='bridal.html'">Bridal Saree</button>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Silk Sarees</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdf6f0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: white;
+      color: rgb(31, 26, 26);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .saree-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .saree-card {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+    .saree-card:hover {
+      transform: translateY(-5px);
+    }
+    .saree-card img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+    .saree-card:hover img {
+      opacity: 0.9;
+    }
+    .saree-card .info {
+      padding: 20px;
+      text-align: center;
+    }
+    .info h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #b07cc2;
+      font-weight: 600;
+    }
+    .info p {
+      margin: 0 0 15px;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.4;
+    }
+    .price {
+      font-weight: bold;
+      color: #b76e79;
+      font-size: 16px;
+    }
+    .action-buttons {
+      position: absolute;
+      bottom: 120px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+    }
+    .saree-card:hover .action-buttons {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .btn-cart {
+      background-color: #b76e79;
+      color: white;
+    }
+    .btn-cart:hover {
+      background-color: #9d5c66;
+    }
+    .btn-wishlist {
+      background-color: white;
+      color: #b76e79;
+      border: 1px solid #b76e79;
+    }
+    .btn-wishlist:hover {
+      background-color: #fdf6f0;
+    }
+    .btn-wishlist.added {
+      background-color: #f0f0f0;
+      color: #b76e79;
+      border-color: #f0f0f0;
+    }
+    .back-btn { 
+      margin: 15px 25px;
+      padding: 10px 20px; 
+      background-color: #fdf6f0; 
+      color: #b76e79;
+      border: 2px solid #b76e79;
+      border-radius: 30px; 
+      cursor: pointer; 
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      background-color: #b76e79;
+      color: white;
+    }
+    .product-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .wishlist-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #b76e79;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+    }
+    .cart-notification {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: #b76e79;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='index.php'">Back to Home</button>
+  <header>
+    <h1>Silk Sarees Collection</h1>
+    <p>Graceful & Elegant picks for every occasion</p>
+  </header>
+
+  <section class="saree-list">
+    <!-- Saree 1 -->
+    <div class="saree-card" data-id="ssaree-001">
+      <img src="Images/imgs1.jpg" alt="Royal Peach Silk Saree">
+      <div class="action-buttons">
+        <button class="btn btn-cart" data-id="ssaree-001">🛒 Add to Cart</button>
+        <button class="btn btn-wishlist" data-id="ssaree-001">♡ Wishlist</button>
+      </div>
+      <div class="info">
+        <h3>Peach Golden Silk Saree</h3>
+        <p>Pure handwoven silk with zari border. Perfect for weddings and special occasions.</p>
+        <div class="price">₹2,999</div>
+        <div class="product-actions">
+          <button class="btn btn-cart" style="padding: 8px 15px;" data-id="ssaree-001">🛒</button>
+          <button class="btn btn-wishlist" style="padding: 8px 15px;" data-id="ssaree-001">♡</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saree 2 -->
+    <div class="saree-card" data-id="ssaree-002">
+      <img src="Images/imgs2.jpg" alt="Peach Orange Silk Saree">
+      <div class="action-buttons">
+        <button class="btn btn-cart" data-id="ssaree-002">🛒 Add to Cart</button>
+        <button class="btn btn-wishlist" data-id="ssaree-002">♡ Wishlist</button>
+      </div>
+      <div class="info">
+        <h3>Orange silk saree</h3>
+        <p>Lightweight and perfect for weddings. Golden zari work with peach base.</p>
+        <div class="price">₹3,299</div>
+        <div class="product-actions">
+          <button class="btn btn-cart" style="padding: 8px 15px;" data-id="ssaree-002">🛒</button>
+          <button class="btn btn-wishlist" style="padding: 8px 15px;" data-id="ssaree-002">♡</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saree 3 -->
+    <div class="saree-card" data-id="ssaree-003">
+      <img src="Images/imgs3.jpg" alt="Cream Silk Saree">
+      <div class="action-buttons">
+        <button class="btn btn-cart" data-id="ssaree-003">🛒 Add to Cart</button>
+        <button class="btn btn-wishlist" data-id="ssaree-003">♡ Wishlist</button>
+      </div>
+      <div class="info">
+        <h3>White Golden Silk</h3>
+        <p>Traditional Banarasi silk with intricate designs. Heavy drape for grand events.</p>
+        <div class="price">₹4,599</div>
+        <div class="product-actions">
+          <button class="btn btn-cart" style="padding: 8px 15px;" data-id="ssaree-003">🛒</button>
+          <button class="btn btn-wishlist" style="padding: 8px 15px;" data-id="ssaree-003">♡</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saree 4 -->
+    <div class="saree-card" data-id="ssaree-004">
+      <img src="Images/imgs4.jpg" alt="Pink Silk Saree">
+      <div class="action-buttons">
+        <button class="btn btn-cart" data-id="ssaree-004">🛒 Add to Cart</button>
+        <button class="btn btn-wishlist" data-id="ssaree-004">♡ Wishlist</button>
+      </div>
+      <div class="info">
+        <h3>Pink Silk with Golden Pattu</h3>
+        <p>Authentic Kanjivaram silk with temple border. Rich emerald green color.</p>
+        <div class="price">₹5,299</div>
+        <div class="product-actions">
+          <button class="btn btn-cart" style="padding: 8px 15px;" data-id="ssaree-004">🛒</button>
+          <button class="btn btn-wishlist" style="padding: 8px 15px;" data-id="ssaree-004">♡</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wishlist-notification" id="wishlistNotification"></div>
+  <div class="cart-notification" id="cartNotification"></div>
+
+  <script>
+    // Add functionality to wishlist buttons
+    document.querySelectorAll('.btn-wishlist').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const card = this.closest('.saree-card');
+        const productId = this.getAttribute('data-id');
+        
+        // Get product details
+        const product = {
+          id: productId,
+          name: card.querySelector('h3').textContent,
+          price: card.querySelector('.price').textContent.replace('₹', '').replace(',', ''),
+          image: card.querySelector('img').src,
+          description: card.querySelector('p').textContent
+        };
+        
+        // Add to wishlist
+        addToWishlist(product);
+        
+        // Update button appearance
+        this.classList.add('added');
+        this.innerHTML = '✓ Added';
+        
+        // Show notification
+        showWishlistNotification(`${product.name} added to wishlist!`);
+      });
+    });
+
+    // Add functionality to cart buttons
+    document.querySelectorAll('.btn-cart').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const card = this.closest('.saree-card');
+        const productId = this.getAttribute('data-id');
+        
+        // Get product details
+        const product = {
+          id: productId,
+          name: card.querySelector('h3').textContent,
+          price: parseInt(card.querySelector('.price').textContent.replace('₹', '').replace(',', '')),
+          image: card.querySelector('img').src,
+          description: card.querySelector('p').textContent,
+          quantity: 1
+        };
+        
+        // Add to cart
+        addToCart(product);
+        
+        // Show notification
+        showCartNotification(`${product.name} added to cart!`);
+      });
+    });
+
+    // Function to add item to wishlist
+    function addToWishlist(product) {
+      let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      
+      // Check if product already exists
+      const exists = wishlist.some(item => item.id === product.id);
+      
+      if (!exists) {
+        wishlist.push(product);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      }
+    }
+
+    // Function to add item to cart
+    function addToCart(product) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      
+      // Check if product already exists
+      const existingItem = cart.find(item => item.id === product.id);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push(product);
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    // Function to show wishlist notification
+    function showWishlistNotification(message) {
+      const notification = document.getElementById('wishlistNotification');
+      notification.textContent = message;
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+
+    // Function to show cart notification
+    function showCartNotification(message) {
+      const notification = document.getElementById('cartNotification');
+      notification.textContent = message;
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+
+    // Initialize wishlist buttons for items already in wishlist
+    function initializeWishlistButtons() {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      wishlist.forEach(item => {
+        document.querySelectorAll(`.btn-wishlist[data-id="${item.id}"]`).forEach(button => {
+          button.classList.add('added');
+          button.innerHTML = '✓ Added';
+        });
+      });
+    }
+
+    // Call initialization when page loads
+    document.addEventListener('DOMContentLoaded', initializeWishlistButtons);
+  </script>
+</body>
+</html>

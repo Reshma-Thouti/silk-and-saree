@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wishlist</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdf6f0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: white;
+      color: rgb(31, 26, 26);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .back-btn { 
+      margin: 15px 25px;
+      padding: 10px 20px; 
+      background-color: #fdf6f0; 
+      color: #b76e79;
+      border: 2px solid #b76e79;
+      border-radius: 30px; 
+      cursor: pointer; 
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      background-color: #b76e79;
+      color: white;
+    }
+    .wishlist-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .wishlist-item {
+       background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .wishlist-item:hover {
+      transform: translateY(-5px);
+    }
+    .wishlist-item img {
+      width: 100%;
+      height:100%;
+      height: 400px;
+      object-fit: cover;
+    }
+    .wishlist-item .info {
+      padding: 20px;
+      text-align: center;
+    }
+    .wishlist-item h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #b07cc2;
+      font-weight: 600;
+    }
+    .wishlist-item p {
+      margin: 0 0 15px;
+      font-size: 15px;
+      color: #555;
+      line-height: 1.4;
+    }
+    .wishlist-item .price {
+      font-weight: bold;
+      color: #b76e79;
+      font-size: 16px;
+    }
+    .wishlist-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .wishlist-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    .move-to-cart {
+      background-color: #b76e79;
+      color: white;
+    }
+    .move-to-cart:hover {
+      background-color: #9d5c66;
+    }
+    .remove-item {
+      background-color: #f0f0f0;
+      color: #b76e79;
+    }
+    .remove-item:hover {
+      background-color: #e0e0e0;
+    }
+    .empty-wishlist {
+      text-align: center;
+      grid-column: 1 / -1;
+      padding: 50px;
+      color: #b76e79;
+      font-size: 18px;
+    }
+    .wishlist-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #b76e79;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 5px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='index.php'">Back to Home</button>
+  <header>
+    <h1>My Saree Wishlist</h1>
+    <p>Your saved favorite sarees</p>
+  </header>
+
+  <div class="wishlist-container" id="wishlistContainer">
+    <!-- Items will be dynamically inserted here -->
+  </div>
+
+  <div class="wishlist-notification" id="wishlistNotification"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const wishlistContainer = document.getElementById('wishlistContainer');
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      
+      // Display empty message if wishlist is empty
+      if (wishlist.length === 0) {
+        wishlistContainer.innerHTML = `
+          <div class="empty-wishlist">
+            <p>Your wishlist is empty</p>
+            <p>Start adding some beautiful sarees from our collection!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Display all wishlist items
+      wishlist.forEach(item => {
+        const wishlistItem = document.createElement('div');
+        wishlistItem.className = 'wishlist-item';
+        wishlistItem.innerHTML = `
+          <img src="${item.image}" alt="${item.name}">
+          <div class="info">
+            <h3>${item.name}</h3>
+            <p>${item.description}</p>
+            <div class="price">₹${parseInt(item.price).toLocaleString('en-IN')}</div>
+            <div class="wishlist-actions">
+              <button class="wishlist-btn move-to-cart" data-id="${item.id}">Add to Cart</button>
+              <button class="wishlist-btn remove-item" data-id="${item.id}">Remove</button>
+            </div>
+          </div>
+        `;
+        wishlistContainer.appendChild(wishlistItem);
+      });
+      
+      // Add event listeners for remove buttons
+      document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', function() {
+          const itemId = this.getAttribute('data-id');
+          removeFromWishlist(itemId);
+        });
+      });
+      
+      // Add event listeners for move to cart buttons
+      document.querySelectorAll('.move-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+          const itemId = this.getAttribute('data-id');
+          moveToCart(itemId);
+        });
+      });
+    });
+    
+    // Remove item from wishlist
+    function removeFromWishlist(itemId) {
+      let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      wishlist = wishlist.filter(item => item.id !== itemId);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      
+      // Show notification
+      showNotification('Item removed from wishlist');
+      
+      // Reload to update the display
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    }
+    
+    // Move item to cart
+    function moveToCart(itemId) {
+      let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      
+      const item = wishlist.find(item => item.id === itemId);
+      
+      if (item) {
+        // Check if item already in cart
+        const existingItem = cart.find(cartItem => cartItem.id === itemId);
+        
+        if (existingItem) {
+          existingItem.quantity = (existingItem.quantity || 1) + 1;
+        } else {
+          item.quantity = 1;
+          cart.push(item);
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        removeFromWishlist(itemId);
+        showNotification('Item moved to cart');
+      }
+    }
+    
+    // Show notification
+    function showNotification(message) {
+      const notification = document.getElementById('wishlistNotification');
+      notification.textContent = message;
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
